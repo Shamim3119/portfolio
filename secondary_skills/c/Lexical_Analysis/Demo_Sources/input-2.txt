@@ -1,0 +1,44 @@
+int main()
+{
+	int		i, j;
+	float	x, y, 9h;
+	
+	y = 12.37;
+	cin >> j >> x;
+
+	for( i=1; i<j; i++ )
+	{
+		x += y*i;
+	}
+	
+	while( x > y )
+	{
+		if( x == 400.00 )
+		{
+			cout << x;
+		}
+		else
+		{
+			cout << y;
+		}
+		y = y*10;
+	}
+
+	x <= y;
+	x >= y;
+	x == y;
+	x != y;
+	x + y;
+	x - y;
+	x * y;
+	x / y;
+	x = y;
+	x += y;
+	x -= y;
+	x *= y;
+	x /= y;
+	x++;
+	y--;
+	
+	return 0;
+}

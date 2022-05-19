@@ -1,0 +1,62 @@
+#ifndef INIT_H
+
+
+#include<stdlib.h>
+#include<math.h>
+#include<GL/glut.h>
+
+
+const double	oneRadian = 3.141592/180.0;
+int	slabFace[6][4], cylinderFace[36][4];
+
+static float view=50.0, vx=0.0, vy=100.0, vz=0.0;
+
+
+void initFaces( void )
+{
+	int		i;
+
+	slabFace[0][0] = 1; slabFace[0][1] = 2; slabFace[0][2] = 3; slabFace[0][3] = 4;
+	slabFace[1][0] = 1; slabFace[1][1] = 5; slabFace[1][2] = 6; slabFace[1][3] = 2;
+	slabFace[2][0] = 4; slabFace[2][1] = 8; slabFace[2][2] = 5; slabFace[2][3] = 1;
+	slabFace[3][0] = 2; slabFace[3][1] = 6; slabFace[3][2] = 7; slabFace[3][3] = 3;
+	slabFace[4][0] = 3; slabFace[4][1] = 7; slabFace[4][2] = 8; slabFace[4][3] = 4;
+	slabFace[5][0] = 8; slabFace[5][1] = 7; slabFace[5][2] = 6; slabFace[5][3] = 5;
+
+	for( i=0; i<36; i++ )
+	{
+		cylinderFace[i][0] = i;		 cylinderFace[i][1] = i + 1; 
+		cylinderFace[i][2] = i + 38; cylinderFace[i][3] = i + 37;
+	}
+}
+
+
+void init( void ) 
+{
+	GLfloat mat_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat mat_shininess[] = { 30.0f };
+	GLfloat ambientColor[] = { 0.3f, 0.3f, 0.3f, 1.0f };
+	GLfloat diffuseColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat specularColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat lightPosition[] = { 5.0f, 5.0f, 5.0f, 0.0f };
+
+	glClearColor( 91.0f/255.0f, 104.0f/255.0f, 138.0f/255.0f, 0.0f );
+	glShadeModel( GL_SMOOTH );
+
+	glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
+	glMaterialfv( GL_FRONT, GL_SHININESS, mat_shininess );
+
+	glLightfv( GL_LIGHT0, GL_POSITION, lightPosition );
+	glLightfv( GL_LIGHT0, GL_AMBIENT, ambientColor );
+	glLightfv( GL_LIGHT0, GL_DIFFUSE, diffuseColor );
+	glLightfv( GL_LIGHT0, GL_SPECULAR, specularColor );
+
+	glEnable( GL_COLOR_MATERIAL );
+	glEnable( GL_LIGHTING );
+	glEnable( GL_LIGHT0 );
+	glEnable( GL_DEPTH_TEST );
+
+	initFaces();
+}
+
+#endif

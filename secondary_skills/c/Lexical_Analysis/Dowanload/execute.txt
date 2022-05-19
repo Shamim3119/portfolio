@@ -1,0 +1,179 @@
+#include "3002-LA.h"
+
+
+
+void read()
+{
+	FILE *f;
+	int i;
+
+
+	f= fopen("input.cpp", "r");
+	if(f  == nil)
+	{
+		printf("\nOpening error.");
+		exit(1);
+	}
+
+	i = -1;
+	while(!feof(f))
+	{
+		fscanf(f, "%c", &buf[++i]);	
+	}
+	buf[i] = '\0';
+
+
+	forward = 0;
+}
+
+void getNextLexeme()
+{
+	char *ch;
+
+	lexeme[0] = '\0';	
+	
+	ch = lexeme;
+	*ch = buf[forward++];
+
+	if(isspace(*ch)){}
+	
+	else if(isalpha(*ch) || *ch == '_')
+	{
+		while(isdigit(buf[forward]) || isalpha(buf[forward]) || buf[forward] == '_')
+		{
+			*ch++;
+			*ch = buf[forward++];			
+		}
+	}
+
+	else if(isdigit(*ch))
+	{
+		while(isdigit(buf[forward]))	
+		{ 
+			*ch++;
+			*ch = buf[forward++]; 
+			 
+		}
+		if(buf[forward] == '.') 
+		{ 
+			*ch++;
+			*ch = buf[forward++]; 
+		}
+		while(isdigit(buf[forward]) || isalpha(buf[forward]) || buf[forward] == '.')	
+		{ 
+			*ch++;
+			*ch = buf[forward++]; 
+			 
+		}		
+	}
+
+	else if(*ch == '+' || *ch == '-' || *ch == '*' || *ch == '/' || *ch == '!' || *ch == '=' || *ch == '<' || *ch == '>')
+	{
+		if(buf[forward] == '+') 
+		{ 
+			*ch++;
+			*ch = buf[forward++];
+		}
+		else if(buf[forward] == '-') 
+		{ 
+			*ch++;
+			*++ch = buf[forward++];
+		}
+		else if(buf[forward] == '<') 
+		{ 
+			*ch++;
+			*ch = buf[forward++]; 
+		}
+		else if( buf[forward] == '>') 
+		{ 
+			*ch++;
+			*ch = buf[forward++]; 
+		}
+		else if(buf[forward] == '=') 
+		{ 
+			ch++;
+			*ch = buf[forward++]; 
+		}		
+	}
+	else if(*ch == '.') 
+	{ 
+		while(isdigit( buf[forward]) || isalpha( buf[forward])) 
+		{ 
+			*ch++;
+			*ch = buf[forward++];
+		}
+	}
+
+	*ch++;
+	*ch = '\0';
+	return;
+}
+
+
+inline FILE *newFile(const char *fName)
+{
+	FILE *f;
+
+	f = fopen(fName, "w");
+	if(f  == nil)
+	{
+		printf("\nOpening error");
+		exit(1);
+	}
+
+	return f;
+}
+
+
+void cheakLexeme()
+{
+	FILE *logFile;
+	FILE *tokenFile;
+
+	int i, errorCount;	
+
+
+	tokenFile	= newFile("output.tok");
+	logFile		= newFile("output.log");
+
+
+	fprintf(logFile, "------------ Start of Build Log ------------\n\n", "output.log"); 
+	
+	i = 0;
+	errorCount = 0; 
+	while(1)
+	{		
+		getNextLexeme();
+
+		if(lexeme[0] == '\0')
+			break;
+
+		if(!valid(lexeme, &tokenFile, i + 1))
+		{
+			printf("\nLexical Error: %s", lexeme);
+			fprintf(logFile, "Lexical Error: %s\n", lexeme);  
+			fprintf(tokenFile, "\n%d: <Lexical error, %s>", i + 1, lexeme); 
+		
+			errorCount++;
+		}
+		i++;
+	}
+
+	printf("\n\nNumber of Lexical error(s): %d", errorCount);
+
+	printf("\n\nCreated file(s)...");
+	printf("\noutput.log\noutput.tok"); 
+	fprintf(logFile, "\n\nNumber of Lexical error(s): %d\n\nCreated file(s)...\noutput.log\noutput.tok ", errorCount, lexeme); 
+
+
+}
+
+int main()
+{	
+	read();
+
+	cheakLexeme();
+
+
+	return 0;
+}

@@ -1,0 +1,66 @@
+#ifndef NVT_H
+
+
+//#include "Init.h"
+#include "fdef.h"
+
+int count = 0;
+
+void move(void)
+{
+	if(count < 100 )
+	{	
+		vx = 0.1;
+		vy++;
+	}
+	else if(count < 200)
+	{
+		vx = 0.1;
+		vy--;
+	}
+	else if(count < 280)
+	{
+		vy = 100.0*cos((count - 199) * oneRadian);
+		vx = 100.0*sin((count - 199) * oneRadian);
+	}
+	else if(count < 370)
+	{
+		vx = 100.0*cos((count - 279) * oneRadian);
+		vz = 100.0*sin((count - 279) * oneRadian);
+	}
+	else if(count < 470)
+	{
+		vx=0.1;
+		vz++;
+	}
+	else if(count < 570)
+	{
+		vx=0.1;
+		vz--;
+	}
+	else if(count < 660)
+	{
+		vz = 100.0*cos((count - 569) * oneRadian);
+		vx = 100.0*sin((count - 569) * oneRadian);
+	}
+	else if(count < 760)
+	{
+		vz=0.1;
+		vx++;
+	}
+
+	else
+		count = -1;
+
+	count++;
+	if(count == 0)
+	{
+		vx = 0.0;
+		vy = 100.0;
+		vz = 0.0;
+	}
+
+	glutPostRedisplay(); 
+}
+
+#endif 

@@ -1,0 +1,133 @@
+//#include "Nvt.h"
+//#include "display.h"
+#include "drawng.h"
+
+
+//static float zoom=50.0, posx=0.0, posy=100.0, posz=0.0;
+//int count = 0;
+//const double	oneRadian = 3.141592/180.0;
+//int				slabFace[6][4], cylinderFace[36][4];
+
+void display( void )
+{
+//wehave been used same verticesandedges list of same coordinate system
+//of same paper drawing but
+//the vertices and edges list are not implemented in code
+//I just use th vertices and edges list virtually
+//and all shapes are drawn using the 
+//functions [drawCylinder, drawSlab, drawCircularSlab],you provide
+
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glPushMatrix();
+		gluLookAt(vx, vy, vz, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+
+
+		glPushMatrix();
+
+			drawBasement();
+
+			sphere();
+
+			backViewSlab();
+
+			upperViewSlab();
+
+
+			leftSideView();
+			rightSideView();
+			squeresBesideBothSideCylinder();
+
+
+			slabBelowtheLeftPiller();
+			slabBelowtheRightPiller();
+
+			leftPiller();
+			rightPiller();
+
+			barsOnBothsidePillers();
+			//it has been drawn almost Broot-force method
+			// such as the code will beshortr if the leftView 
+			// rightView would be drawn calling the same function with 
+			// different parmeter and
+			// similar shapes are with loop.
+
+			leftPiramid();
+			rightPiramid();
+
+			stairs();
+
+		glPopMatrix();
+		
+
+	glPopMatrix();
+	glutSwapBuffers();
+}
+
+void reshape (int w, int h)
+{
+   glViewport (0, 0, (GLsizei) w, (GLsizei) h);
+   glMatrixMode (GL_PROJECTION);
+   glLoadIdentity ();
+   gluPerspective((GLfloat)view, (GLfloat) w/(GLfloat) h, 10.0, 1000.0);
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+
+}
+
+void mouse(int button, int state, int x, int y)
+{
+	switch (button) 
+	{
+		case GLUT_LEFT_BUTTON:
+			if (state == GLUT_DOWN)
+            glutIdleFunc(move);
+			else glutIdleFunc(NULL);
+        break;
+
+		case GLUT_RIGHT_BUTTON:
+    		if (state == GLUT_DOWN)
+            glutIdleFunc(NULL);
+			else glutIdleFunc(NULL);
+        break;
+
+		default:
+        break;
+   }
+}
+
+
+void keyboard(unsigned char key, int x, int y)
+{
+   switch (key) 
+   {
+      case 27:
+         exit(0);
+       break;
+   }
+}
+
+
+
+int main(int argc, char** argv)
+{
+	glutInit(&argc, argv);
+	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutInitWindowSize (1000, 700);
+	glutInitWindowPosition (10, 10);
+	glutCreateWindow ("Novo Theater");
+	init();
+   	glutDisplayFunc(display);
+	glutReshapeFunc(reshape);
+
+   	glutKeyboardFunc(keyboard);
+    glutMouseFunc(mouse);
+
+	glutMainLoop();
+
+	return 0;
+}
+
+
+
